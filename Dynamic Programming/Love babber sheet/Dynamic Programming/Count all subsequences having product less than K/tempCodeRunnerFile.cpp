@@ -1,0 +1,1 @@
+cout << productSubSeqCount(A, k) << endl;

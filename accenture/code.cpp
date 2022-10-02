@@ -1,59 +1,53 @@
-#include<iostream>
-#include<vector>
-#include<bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
-int res;
-void solve(vector<int>arr,int n,int ind,int m,int leftind){
-    if(ind>leftind || ind>n-2 ){
-        return;
-    }
-    
-    if(m==0){
-        
-       for(int i=1;i<leftind;i++){
-           if(arr[i]<=arr[i-1]){
-               return;
-           }
-       }
-       res=1;
-       return;
-    }
-    int tap=arr[ind]+arr[ind+1]+arr[ind+2];
-    
-    if(arr[ind-1]>=tap && ind>0){
-        return;
-    }
-    solve(arr,n,ind+1,m,leftind);
-    int var=0;
-    var=arr[ind]+arr[ind+1]+arr[ind+2];
-    arr[ind]=var;
-    int f=ind+1;
-    int fgx=ind+3;
-    if(fgx<leftind){
-       while(fgx<leftind){
-           arr[f]=arr[fgx];
-           f++;
-           fgx++;
-       }
-    }
-    solve(arr,n,ind+1,m-1,leftind-2);
-    
+map<string, int> mp;
+void solve(int h, int l, string s)
+{
+    string temp = s.substr(l, h - l + 1);
+    mp[temp]++;
 }
-int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        int n,m;
-        cin>>n;
-        cin>>m;
-        vector<int>arr(n);
-        for(int i=0;i<n;i++){
-             cin>>arr[i];
-        }
-        res=0;
-        solve(arr,n,0,m,n);
-        cout<<res<<endl;
+void convert(int i, int j, string &s)
+{
+    while (i <= j)
+    {
+        s[i] = tolower(s[i]);
+        i++;
+    }
+}
 
+int main()
+{
+    string s;
+    getline(cin, s);
+
+    
+    int h = 0;
+    int l = 0;
+    int n = s.length();
+    while (h < n)
+    {
+        if (s[h] == ' ')
+        {
+            convert(l, h - 1, s);
+            solve(h - 1, l, s);
+
+            l = h + 1;
+        }
+        if (h == n - 1)
+        {
+            convert(l, h, s);
+            solve(h, l, s);
+        }
+        h++;
+    }
+    for (auto x : mp)
+    {
+        if (x.second > 1)
+        {
+            cout << x.first << " " << x.second << endl;
+        }
     }
     return 0;
 }
